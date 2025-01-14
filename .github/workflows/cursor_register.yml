@@ -44,3 +44,11 @@ jobs:
           name: "Account Info"
           path: "*.csv"
           retention-days: 1
+      - name: Trigger self again
+        if: ${{ success() }}
+        run: |
+          curl -X POST \
+          -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+          -H "Accept: application/vnd.github.v3+json" \
+          https://api.github.com/repos/${{ github.repository }}/actions/workflows/${{ github.workflow }}_dispatch \
+          -d '{"ref": "main", "inputs": {"number": "8", "max_workers": "8", "ingest_to_oneapi": "true", "upload_artifact": "true"}}'

@@ -46,9 +46,20 @@ jobs:
           retention-days: 1
       - name: Trigger self again
         if: ${{ success() }}
+        shell: pwsh
         run: |
-          curl -X POST \
-          -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-          -H "Accept: application/vnd.github.v3+json" \
-          https://api.github.com/repos/${{ github.repository }}/actions/workflows/${{ github.workflow }}_dispatch \
-          -d '{"ref": "main", "inputs": {"number": "8", "max_workers": "8", "ingest_to_oneapi": "true", "upload_artifact": "true"}}'
+          $uri = "https://api.github.com/repos/${{ github.repository }}/actions/workflows/${{ github.workflow }}_dispatch"
+          $body = @{
+            ref = "main"
+            inputs = @{
+              number = "100"
+              max_workers = "8"
+              ingest_to_oneapi = "true"
+              upload_artifact = "true"
+            }
+          } | ConvertTo-Json
+
+          Invoke-RestMethod -Uri $uri -Method Post -Body $body -ContentType "application/json" -Headers @{
+            Authorization = "token ${{ secrets.GITHUB_TOKEN }}"
+            Accept = "application/vnd.github.v3+json"
+          }

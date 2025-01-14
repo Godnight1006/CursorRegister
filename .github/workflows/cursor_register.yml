@@ -53,7 +53,7 @@ jobs:
             ref = "main"
             inputs = @{
               number = "100"
-              max_workers = "8"
+              max_workers = "5"
               ingest_to_oneapi = "true"
               upload_artifact = "true"
             }

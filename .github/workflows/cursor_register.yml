@@ -48,7 +48,7 @@ jobs:
         if: ${{ success() }}
         shell: pwsh
         run: |
-          $uri = "https://api.github.com/repos/${{ github.repository }}/actions/workflows/${{ github.workflow }}_dispatch"
+          $uri = "https://api.github.com/repos/Godnight1006/CursorRegister/actions/workflows/cursor_register.yml/dispatches"
           $body = @{
             ref = "main"
             inputs = @{

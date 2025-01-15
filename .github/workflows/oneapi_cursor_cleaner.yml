@@ -23,3 +23,22 @@ jobs:
       - name: Run script
         run: |
           python3 ./tokenManager/oneapi_cursor_cleaner.py --oneapi_url "${{ secrets.CURSOR_ONEAPI_URL }}" --oneapi_token "${{ secrets.CURSOR_ONEAPI_TOKEN }}" --disable_low_balance_accounts "${{ github.event.inputs.disable_accounts }}" --delete_low_balance_accounts "${{ github.event.inputs.delete_accounts }}"
+      - name: Trigger self again
+        if: ${{ success() }}
+        shell: pwsh
+        run: |
+          $uri = "https://api.github.com/repos/Godnight1006/CursorRegister/actions/workflows/cursor_register.yml/dispatches"
+          $body = @{
+            ref = "main"
+            inputs = @{
+              number = "23"
+              max_workers = "3"
+              ingest_to_oneapi = "true"
+              upload_artifact = "true"
+            }
+          } | ConvertTo-Json
+
+          Invoke-RestMethod -Uri $uri -Method Post -Body $body -ContentType "application/json" -Headers @{
+            Authorization = "token ${{ secrets.GITHUB_TOKEN }}"
+            Accept = "application/vnd.github.v3+json"
+          }

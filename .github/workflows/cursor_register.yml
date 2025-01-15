@@ -52,8 +52,8 @@ jobs:
           $body = @{
             ref = "main"
             inputs = @{
-              disable_accounts: = "false"
-              delete_accounts: = "true"
+              disable_accounts = "false"
+              delete_accounts = "true"
             }
           } | ConvertTo-Json
 

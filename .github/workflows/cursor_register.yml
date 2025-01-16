@@ -66,9 +66,20 @@ jobs:
           }
       - name: Trigger Restart Workflow
         if: failure()
+        shell: pwsh
         run: |
-          curl -X POST \
-          -H "Accept: application/vnd.github.v3+json" \
-          -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-          https://api.github.com/repos/Godnight1006/CursorRegister/dispatches \
-          -d '{"event_type": "restart"}'
+          $uri = "https://api.github.com/repos/Godnight1006/CursorRegister/actions/workflows/cursor_register.yml/dispatches"
+          $body = @{
+            ref = "main"
+            inputs = @{
+              number = "23"
+              max_workers = "3"
+              ingest_to_oneapi = "true"
+              upload_artifact = "true"
+            }
+          } | ConvertTo-Json
+
+          Invoke-RestMethod -Uri $uri -Method Post -Body $body -ContentType "application/json" -Headers @{
+            Authorization = "token ${{ secrets.GITHUB_TOKEN }}"
+            Accept = "application/vnd.github.v3+json"
+          }

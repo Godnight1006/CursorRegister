@@ -14,7 +14,8 @@ on:
         description: 'Upload account infos to artifact'
         type: boolean
         default: true
-
+    repository_dispatch:
+      types: [restart]
 jobs:
   build:
     runs-on: windows-latest

@@ -14,8 +14,8 @@ on:
         description: 'Upload account infos to artifact'
         type: boolean
         default: true
-    repository_dispatch:
-      types: [restart]
+  repository_dispatch:
+    types: [restart]
 jobs:
   build:
     runs-on: windows-latest
@@ -62,3 +62,11 @@ jobs:
             Authorization = "token ${{ secrets.GITHUB_TOKEN }}"
             Accept = "application/vnd.github.v3+json"
           }
+      - name: Trigger Restart Workflow
+        if: failure()
+        run: |
+          curl -X POST \
+          -H "Accept: application/vnd.github.v3+json" \
+          -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+          https://api.github.com/repos/<your-username>/<your-repo>/dispatches \
+          -d '{"event_type": "restart"}'

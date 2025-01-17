@@ -49,17 +49,14 @@ jobs:
         if: ${{ success() }}
         shell: pwsh
         run: |
-          $uri = "https://api.github.com/repos/Godnight1006/CursorRegister/actions/workflows/cursor_register.yml/dispatches"
+          $uri = "https://api.github.com/repos/Godnight1006/CursorRegister/actions/workflows/oneapi_cursor_cleaner.yml/dispatches"
           $body = @{
             ref = "main"
             inputs = @{
-              number = "23"
-              max_workers = "3"
-              ingest_to_oneapi = "true"
-              upload_artifact = "true"
+              disable_accounts = "false"
+              delete_accounts = "true"
             }
           } | ConvertTo-Json
-
           Invoke-RestMethod -Uri $uri -Method Post -Body $body -ContentType "application/json" -Headers @{
             Authorization = "token ${{ secrets.GITHUB_TOKEN }}"
             Accept = "application/vnd.github.v3+json"
@@ -68,17 +65,14 @@ jobs:
         if: failure()
         shell: pwsh
         run: |
-          $uri = "https://api.github.com/repos/Godnight1006/CursorRegister/actions/workflows/cursor_register.yml/dispatches"
+          $uri = "https://api.github.com/repos/Godnight1006/CursorRegister/actions/workflows/oneapi_cursor_cleaner.yml/dispatches"
           $body = @{
             ref = "main"
             inputs = @{
-              number = "23"
-              max_workers = "3"
-              ingest_to_oneapi = "true"
-              upload_artifact = "true"
+              disable_accounts = "false"
+              delete_accounts = "true"
             }
           } | ConvertTo-Json
-
           Invoke-RestMethod -Uri $uri -Method Post -Body $body -ContentType "application/json" -Headers @{
             Authorization = "token ${{ secrets.GITHUB_TOKEN }}"
             Accept = "application/vnd.github.v3+json"

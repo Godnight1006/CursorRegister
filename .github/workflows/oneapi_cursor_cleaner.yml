@@ -50,8 +50,8 @@ jobs:
           $body = @{
             ref = "main"
             inputs = @{
-              number = "23"
-              max_workers = "3"
+              number = "14"
+              max_workers = "2"
               ingest_to_oneapi = "true"
               upload_artifact = "true"
             }

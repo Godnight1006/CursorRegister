@@ -230,6 +230,13 @@ def sign_up(options):
     }
 
 def register_cursor(number, max_workers):
+    # Set timer to exit after 300 minutes
+    def timeout_handler():
+        print("[Register] Timeout after 300 minutes")
+        os._exit(1)
+        
+    timer = threading.Timer(300 * 60, timeout_handler)
+    timer.start()
 
     options = ChromiumOptions()
     options.auto_port()
